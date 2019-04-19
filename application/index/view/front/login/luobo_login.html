@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>登录</title>
+    {load href="../../../luobo/css/login.css,../../../luobo/css/public.css,../../../luobo/css/classly.css"/}
+</head>
+<body>
+<div class="webView">
+    <div class="contentBox">
+        <div class="loginTitle">
+            萝卜后台登录
+        </div>
+        <div class="userAccount">
+            <div class="accout clearfix">
+                <div class="accoutTxt fl">账号：</div>
+                <input type="text" id="username" name="username" class="fl input">
+            </div>
+            <div class="passWord clearfix mt30">
+                <div class="pwdTxt fl">密码：</div>
+                <input type="password" id="password" name="password" class="fl input">
+            </div>
+            <div class="theme_2 button loginBtn">立即登录</div>
+            <!--<button type="submit" class="theme_2 button loginBtn">立即登录</button>-->
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    $(".loginBtn").click(function () {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        $.ajax({
+            url: "index",
+            type: "POST",
+            data: {"username": username, "password": password},
+            success: function (data) {
+                //   $this->redirect('front.content/index');
+                var result = JSON.parse(data);
+            //    console.log(typeof result.code );
+                if (result.code == "1") {
+                   location.href="../front.content/index?token="+result.token;
+                } else {
+                    alert("账号密码错误！")
+                }
+            }
+        });
+    });
+</script>

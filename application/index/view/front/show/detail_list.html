@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <title>{$info["data"]["0"]["luobo_title"]}</title>
+    <link href="https://s1.c.meishij.net/zt_new1/css/zt2018.css?v=5" rel="stylesheet"/>
+    <style>
+        .content {
+            width: 300px;
+            margin: auto;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            right: 0;
+            bottom: 40px;
+            box-shadow: 0 0 10px #cccccc;;
+        }
+
+        .content img {
+            width: auto;
+            height: auto;
+            max-width: 94%;
+            z-index: -1;
+            padding: 10px 10px;
+            position: relative;
+        }
+
+        .content .dates {
+            padding: 0 0 60px 20px;
+            font-family: "PingFangSC-Regular", sans-serif;
+            font-size: 14px;
+            color: #666666;
+            line-height: 80px;
+
+        }
+
+        .content h1 {
+            font-weight: bold;
+            padding: 0 0 40px 20px;
+            font-size: 30px;
+            line-height: 30px;
+            color: #000000;
+        }
+
+        .content .title {
+            margin-left: 60px;
+            font-size: 42px;
+            color: #000000;
+            line-height: 42px;
+        }
+
+        .content .info {
+            font-size: 14px;
+            color: #999999;
+            line-height: 20px;
+            padding: 20px 20px 0 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .detail .desc {
+            margin-top: 20px;
+            margin-right: 25px;
+            margin-left: 25px;
+        }
+
+        .detail p {
+            font-size: 14px;
+            color: #383838;
+            line-height: 25px;
+            padding: 12px 4px 0px;
+        }
+
+        .detail .title {
+            font-size: 26px;
+            margin-left: 25px;
+            margin-right: 25px;
+            line-height: 30px;
+            color: #222222;
+        }
+
+        .detail .luobo_img {
+            width: auto;
+            height: auto;
+            max-width: 94%;
+            z-index: -1;
+            padding: 10px 10px;
+            position: relative;
+        }
+
+        .detail .copy {
+            width: 50px;
+            height: 20px;
+            font-size: 12px;
+            background-color: white;
+            border: 1px solid #DADADA;
+        }
+    </style>
+</head>
+
+<body>
+<div class="content">
+    <img src='{$info["data"]["0"]["luobo_cover_img"]}'/>
+    <span class="dates">{$info["data"]["0"]["new_publish_date"]}</span><br>
+    <h1 class="week">{$info["data"]["0"]["new_date"]}</h1><br>
+    <span class="title">{$info["data"]["0"]["luobo_title"]}</span><br>
+    <div class="info">{$info["data"]["0"]["luobo_info"]}</div>
+</div>
+<div class="detail" style="display: none">
+    <img class="luobo_img" src='{$info["data"]["0"]["new_luobo_cover_img"]}'/>
+    <span class="title">{$info["data"]["0"]["luobo_title"]}</span>
+    <button class="copy">复制</button>
+    <br>
+    <div class="desc">{$info["data"]["0"]["luobo_content"]}</div>
+</div>
+</body>
+</html>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    $(".content").click(function () {
+        $(".detail").fadeIn();
+        $(".content").fadeOut();
+    });
+    $(".detail").click(function () {
+        $(".content").fadeIn();
+        $(".detail").fadeOut();
+    });
+</script>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>后台管理系统</title>
+    <!-- 公共部分 -->
+    {load href="../../../luobo/js/jquery/jquery.min.js,../../../luobo/js/plugin/jquery.browserhint.js,
+    ../../../luobo/js/plugin/layui/layui.js,
+    ../../../luobo/js/plugin/layui/css/layui.css,
+    ../../../luobo/js/manageList.js"/}
+    <!--<script language="javascript" src="../../lbJs/jquery/jquery.min.js"></script>-->
+    <!--<script language="javascript" src="../../lbJs/plugin/jquery.browserhint.js"></script>-->
+    <!--<link rel="stylesheet" href="../../lbJs/plugin/layui/css/layui.css">-->
+    <!--<script src="../../lbJs/plugin/layui/layui.js"></script>	-->
+    <!--<script src="../../lbJs/web/manageList/ManageList.js"></script>	-->
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin webContent">
+    <div class="layui-header">
+        <div class="layui-logo">后台管理系统</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    {$Think.session.username}
+                </a>
+            </li>
+            <li class="layui-nav-item"><a href="">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed contentCreat layui-this">
+                    <a class="" href="javascript:;">内容创建</a>
+                </li>
+                <li class="layui-nav-item contentManage">
+                    <a href="javascript:;">内容管理</a>
+                </li>
+                <li class="layui-nav-item dataLabel"><a href="javascript:;">标签管理</a></li>
+                <li class="layui-nav-item commentManage"><a href="javascript:;">评论管理</a></li>
+                <li class="layui-nav-item dataStatistics"><a href="javascript:;">数据统计</a></li>
+            </ul>
+        </div>
+    </div>
+    ;
+    <div class="layui-body" style="bottom:0px;overflow: hidden;">
+        <div id="contentBox" style="height:100%">
+            <iframe src="add" width="100%" height="100%" marginwidth="0" frameborder="no"
+                    scrolling="no"></iframe>
+        </div>
+    </div>
+    <!-- <div class="layui-footer">
+      底部固定区域
+      © layui.com - 底部固定区域
+    </div> -->
+
+</div>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<meta charset="utf-8"/>
+{load href="../../../luobo/tinymce/tinymce.min.js"/}
+<!--&lt;!&ndash;global&ndash;&gt;-->
+<!--<script language="javascript" type="text/javascript" src="js/jquery-2.1.4.min.js"></script>-->
+<!--<link rel="stylesheet" type="text/css" href="css/ss_base.css" />-->
+<!--&lt;!&ndash;/global&ndash;&gt;-->
+<script type="text/javascript" src="https://s1.c.meishij.net/zt_new1/js/jquery-2.1.4.min.js?v=1"></script>
+<link rel="stylesheet" type="text/css" media="all" href="https://s1.c.meishij.net/zt_new1/css/ss_base.css?v=1"/>
+<script type="text/javascript" src="https://s1.c.meishij.net/zt_new1/js/clipboard.min.js?v=1"></script>
+<script type="text/javascript" src="https://s1.c.meishij.net/zt_new1/js/newztht.js?v=1"></script>
+<link rel="stylesheet" type="text/css" media="all" href="https://s1.c.meishij.net/zt_new1/css/newztht.css?v=3"/>
+
+<!--&lt;!&ndash;static&ndash;&gt;-->
+<!--<link rel="stylesheet" type="text/css" href="css/newztht.css">-->
+<!--<script src="tinymce/tinymce.min.js"></script>-->
+<!--<script src="js/newztht.js"></script>-->
+<!--<script src="js/clipboard.min.js"></script>-->
+<!--/static-->
+
+
+<div class="main_editer" style="overflow-y: auto;height:calc(100% - 172px);width:800px">
+
+    <textarea style="width:760px;margin:30px 60px;" placeholder="开始写正文" id="maineditor">{$wz_info['luobo_content'] ?? ''}</textarea>
+    <div class="edit_others_w">
+        <div class="edit_others">
+            <input type="text" name="title" placeholder="请在这里输入标题" value="{$wz_info['luobo_title'] ?? ''}"
+                   class="zt_t_input" autocomplete=off id="nzte_title">
+            <input type="text" name="info" placeholder="请输入简介" value="{$wz_info['luobo_info'] ?? ''}"
+                   class="zt_au_input" autocomplete=off id="nzte_author">
+        </div>
+    </div>
+    <div class="editer_fmtw">
+        <div class="editer_fmt1">
+            <span class="t">封面：</span>
+            <a href="javascript:;" class="checkfmtbtn" id="checkfmtbtn">从素材库选取</a>
+        </div>
+        <input type="hidden" id="act" value="{$act ?? 'add'}">
+        <input type="hidden" id="zt_id" value="{$wz_info['id'] ?? ''}">
+        <div class="editer_fmt2">
+            <span class="t">封面预览：</span>
+            <div class="imgw"><img
+                    src="{$wz_info['luobo_cover_img'] ?? 'http://www.rw.com/luobo/public/images/nopic730320.png'}"
+                    class="editer_fmt_img" id="editer_fmt_img"></div>
+        </div>
+    </div>
+
+</div>
+
+<div class="alertboxw" id="alertboxw1" style="display:none;">
+
+    <div class="editer_blackbg1" id="editer_blackbg1"></div>
+    <div class="editer_alertbox1">
+        <iframe id="checking" src="checking" style="height:100%;width:100%;"></iframe>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $("#checkfmtbtn").click(function () {
+            $("#alertboxw1").show();
+            $("#checking").attr("src","checking");
+        });
+        $("#editer_blackbg1").click(function () {
+            $("#alertboxw1").hide();
+        });
+
+    });
+
+    function changeFmt(srcurl) {
+
+        if (srcurl == "" || srcurl == undefined) {
+            $("#alertboxw1").hide();
+        } else {
+            $("#editer_fmt_img").attr("src", srcurl);
+            $("#alertboxw1").hide();
+        }
+
+    }
+
+
+</script>
+<div class="alertboxw" id="alertboxw2" style="display:none;">
+
+    <div class="editer_blackbg1" id="editer_blackbg2"></div>
+    <div class="editer_alertbox1">
+        <iframe src="checking" style="height:100%;width:100%;"></iframe>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+
+
+        $("#editer_blackbg2").click(function () {
+            $("#alertboxw2").hide();
+        });
+
+    });
+
+    function shutInsertimgbox() {
+        $("#alertboxw2").hide();
+    }
+
+
+</script>
+
+
+<div class="main_editer_bottombarw">
+    <div class="main_editer_bottombar">
+        <div class="meb_btn meb_btn1">
+            <a href="javascript:;" class="btn btn2" id="save_cg">保存草稿</a>
+        </div>
+        <div class="meb_btn meb_btn1">
+            <a href="javascript:;" class="btn btn2" id="preview_zt">预览专题</a>
+            <!-- <div class="arrow">
+                <span class="i">∨</span>
+                <div class="btn_morew">
+                    <a href="javascript:;" class="btn_more" id="getlink_zt">生成专题链接</a>
+                    <input type="text" name="" id="getlink_zt_input" style="height:1px;width:1px;opacity:0;">
+                </div>
+            </div> -->
+        </div>
+        <div class="meb_btn meb_btn1">
+            <a href="javascript:;" class="btn btn2" id="save_post">保存并上线</a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    tinymce.init({
+        selector: '#maineditor',
+        height: 400,
+        plugins: [
+            "placeholder",
+            "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars fullscreen insertdatetime media nonbreaking",
+            "table contextmenu directionality emoticons template textcolor paste fullpage textcolor colorpicker textpattern uploadrecipe ssinsertimg ssinsertvideo"
+        ],
+        toolbar: "undo redo | fontsizeselect bold italic underline forecolor | alignleft aligncenter alignright | bullist numlist | blockquote hr | link ssinsertimg ssinsertvideo | ",
+
+        placeholder_attrs: {
+            style: {
+                position: 'absolute',
+                top: '33px',
+                left: '60px',
+                color: '#aaa',
+                padding: '0%',
+                overflow: 'hidden',
+                "white-space": 'pre-wrap'
+            }
+        },
+        menubar: false,
+        toolbar_items_size: 'big',
+        fontsize_formats: "10px 12px 14px 15px 16px 17px 18px 20px 22px 24px 28px 32px 36px",
+        callbacks: function () {
+            console.log(tinyMCE.activeEditor.selection.getContent());
+        },
+        content_css: [
+            'https://s1.c.meishij.net/zt_new1/css/ztmb.css'
+        ],
+    });
+
+
+    function addCp(cpdom) {
+        var dom = tinyMCE.activeEditor.dom;
+        // alert(cpdom);
+        tinyMCE.activeEditor.selection.setContent(cpdom);
+    }
+
+
+</script>
+
+<script type="text/javascript">
+
+    $(function () {
+        //保存为草稿
+        $("#save_cg").click(function () {
+            editerPoster(1)
+        });
+        //预览
+        $("#preview_zt").click(function () {
+            editerPoster(2)
+        });
+        //保存并上线
+        $("#save_post").click(function () {
+            editerPoster(3)
+        });
+
+    });
+
+    function editerPoster(type, data) {
+
+        var _type = type;
+        var _act = $("#act").val();
+        var _zt_id = $("#zt_id").val();
+        var _zt_tmplate_id = $("#zt_tmplate_id").val();
+        var _title = $("#nzte_title").val();
+        var _info = $("#nzte_author").val();
+        var _content = tinyMCE.activeEditor.getContent({format: 'raw'});
+        var _coverimg = $("#editer_fmt_img").attr("src");
+        var _data = data;
+        console.log(_act);
+        // console.log(_info);
+        // console.log(_content);
+        // console.log(_coverimg);
+
+        $.ajax({
+            url: "add?act="+_act,
+            type: "POST",
+            data: {
+                act: _act,
+                wz_id: _zt_id,
+                zt_tmplate_id: _zt_tmplate_id,
+                operate_type: _type,
+                title: _title,
+                info: _info,
+                content: _content,
+                coverimg: _coverimg,
+                data: _data
+            },
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+
+                var n = parseInt(data.code);
+                console.log(n);
+                console.log(typeof n);
+
+                $("#zt_id").val(data.ztid);
+                switch (n) {
+                    case 1:
+                        showSuccTips("保存成功，请到“专题素材/草稿箱”查看");
+                        break;
+                    case 2:
+                        //预览
+                        // 返回格式示例：{"type":"3","ewmurl":"http://www.meishij.net/ajax/qrcode_wap.php?i=1882436","zturl":"http://www.meishij.net"}
+                        var ztid = data.ztid;
+                        var zturl = data.zturl;
+                        showEwm('create_qrcode?id='+ztid, zturl);
+                        break;
+                    case 3:
+                        //成功跳转
+                        // 返回格式示例：{"type":"4","ztid":"1"}
+                        var ztid = data.ztid;
+                        window.location = "publish?wz_id=" + ztid + "&act=" + data.act;
+                        break;
+
+                }
+            },
+
+
+        });
+
+
+    }
+
+
+</script>
+
+
+<div class="blackbg" id="blackbg2" style="display:none;"></div>
+<div class="alertbox" id="alertbox2" style="height:280px;width:500px;display:none;">
+    <h1>插入视频</h1>
+    <!-- <p><img src="images/delalerticon.png">　删除后将不可恢复，确认要删除吗？</p> -->
+
+    <div class="inputw"><input type="text" name="" placeholder="请输入视频代码，支持腾讯、优酷、爱奇艺，推荐腾讯" id="alertbox_videocode"></div>
+
+    <a href="javascript:void(0);" class="btn addvideo_btn">插入视频</a>
+    <span class="shutbtn" id="ab_shutbtn2">×</span>
+</div>
+
+<!-- 
+
+<iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=o01768xitrp&tiny=0&auto=0" allowfullscreen></iframe>
+<iframe height=498 width=510 src='http://player.youku.com/embed/XMzQ0NzY0NjgyNA==' frameborder=0 'allowfullscreen'></iframe>
+<iframe src="http://open.iqiyi.com/developer/player_js/coopPlayerIndex.html?vid=044920237daf828d645238d1dfbc5a23&tvId=956706900&accessToken=2.f22860a2479ad60d8da7697274de9346&appKey=3955c3425820435e86d0f4cdfe56f5e7&appId=1368&height=100%&width=100%" frameborder="0" allowfullscreen="true" width="100%" height="100%"></iframe>
+
+ -->
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $("#blackbg2,#ab_shutbtn2").click(function () {
+            $("#blackbg2").fadeOut();
+            $("#alertbox2").fadeOut();
+        });
+        $(".addvideo_btn").click(function () {
+            var vc = $("#alertbox_videocode").val();
+            var len = vc.length;
+            vc = vc.substring(0, 8) + ' style="width:100%!important;height:100%!important;position:absolute;left:0px;top:0px;" ' + vc.substring(8, len);
+            vc = '<div class="editor_videow" style="width:100%;padding-top:56.25%;overflow:hidden;position:relative;">' + vc + '</div>';
+            addCp(vc);
+            $("#blackbg2").fadeOut();
+            $("#alertbox2").fadeOut();
+        });
+
+    });
+
+
+</script>
+
+

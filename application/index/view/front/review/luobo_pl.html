@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>专题统计</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <!--<script type="text/javascript" src="https://s1.c.meishij.net/zt_new1/js/jquery-2.1.4.min.js?v=1"></script>-->
+    <!--<link rel="stylesheet" type="text/css" media="all" href="https://s1.c.meishij.net/zt_new1/css/ss_base.css?v=1"/>-->
+
+
+    <!--<script type="text/javascript" src="https://s1.c.meishij.net/zt_new1/js/newztht.js?v=1"></script>-->
+    <!--<link rel="stylesheet" type="text/css" media="all" href="https://s1.c.meishij.net/zt_new1/css/newztht.css?v=3"/>-->
+    <!--global-->
+    <script type="text/javascript" src="https://s1.c.meishij.net/zt_new1/js/jquery-2.1.4.min.js?v=1"></script>
+    <link rel="stylesheet" type="text/css" media="all" href="https://s1.c.meishij.net/zt_new1/css/ss_base.css?v=1"/>
+    <script type="text/javascript" src="https://s1.c.meishij.net/zt_new1/js/clipboard.min.js?v=1"></script>
+    <!--/global-->
+
+
+    <!--static-->
+    <script type="text/javascript" src="https://s1.c.meishij.net/zt_new1/js/newztht.js?v=1"></script>
+    <link rel="stylesheet" type="text/css" media="all" href="https://s1.c.meishij.net/zt_new1/css/newztht.css?v=3"/>
+    <!--/static-->
+
+
+</head>
+<style>
+    .del{
+        text-decoration:none;
+        color: red;
+    }
+</style>
+<body>
+
+
+<div class="nzt_main">
+
+
+    <div class="nzt_maintabw" tab="1">
+
+        <h1 class="nzt_maintitle">
+            评论管理（共{$page_info['count']}条）
+        </h1>
+
+        <div class="nzt_search_formw">
+            <form action="index" method="get">
+                <input type="text" name="title" value="{$title ?? ''}" placeholder="标题"><input type="submit" name="" value="">
+            </form>
+        </div>
+
+
+        <div class="zttj_listw" list="1">
+
+            <div class="zttj_list_header">
+                <span class="span1">内容</span>
+                <span class="span2">评论内容</span>
+                <span class="span3">评论时间</span>
+                <span class="span4">操作</span>
+            </div>
+            {if empty($info)}
+            <div class="ztlist_nocontip"><p>没有找到相关专题</p></div>
+            {else/}
+            {foreach name="info" item="vo"}
+            <div class="zttj_listitem" ztid="{$vo['id']}"
+                 qrcode_url="../front.content/create_qrcode?id={$vo['id']}"
+                 redirect_url="{$url}{$vo['id']}">
+                <div class="c c1">
+                    <img src="{$vo['luobo_cover_img'] ?? '../../../images/ztimg730320.jpg'}">
+                    <strong>{$vo['luobo_title']}</strong>
+                    <span>发布于{$vo['publish_date']}</span>
+                </div>
+                <div class="c c2"><span>{$vo['wz_info']['luobo_pl_info']}</span></div>
+                <div class="c c3"><span>{$vo['wz_info']['publish_time']}</span></div>
+                <div class="c c4"><a class="del">删除评论</a></div>
+            </div>
+            {/foreach}
+            {/if}
+
+        </div>
+
+        <div class="nzt_pagew">
+            <a href="index?page={$page_info['prevpage']}&title={$title}" class="prev">◀</a><span>{$page}/<em
+                class="max">{$page_info['page_count']}</em></span><a
+                href="index?page={$page_info['nextpage']}&title={$title}" class="next">▶</a>
+
+            <form action="index" method="get" class="page_form" flag="1">
+                <input type="hidden" name="title" value="{$title}">
+                <input type="number" name="page"><input type="submit" name="" value="跳转" class="goxpagebtn">
+            </form>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+</body>
+<div class="alertbox" id="alertbox" style="height:280px;width:500px;display:none;">
+    <h1>确认删除提示</h1>
+    <p><img src="../../../luobo/images/delalerticon.png">　删除后将不可恢复，确认要删除吗？</p>
+    <a href="javascript:void(0);" class="btn ztid_delbtn" ztid="">删除</a>
+    <span class="shutbtn">×</span>
+</div>
+<script>
+    $(function () {
+        $(".c4 .del").click(function () {
+            var _this = $(this);
+            var ztid = _this.parents(".zttj_listitem").attr("ztid");
+            $("#alertbox .ztid_delbtn").attr("ztid", ztid);
+            $("#blackbg").fadeIn();
+            $("#alertbox").fadeIn();
+        });
+        $("#alertbox .shutbtn").click(function () {
+            $("#blackbg").fadeOut();
+            $("#alertbox").fadeOut();
+        });
+        $(document).on("click", ".ztid_delbtn", function () {
+            var _this = $(this);
+            var ztid = _this.attr("ztid");
+            var act = $("#act").val();
+            $.post("delete?id=" + ztid, function (data) {
+                if (data == 1) {
+                    location.href = "index";
+                }
+            });
+        });
+    });
+
+</script>
